@@ -1,6 +1,7 @@
 from urllib.request import AbstractDigestAuthHandler
 import streamlit as st 
 import pandas as pd 
+from pickle import load
 
 st.title('Data Science Project')
 
@@ -41,4 +42,31 @@ def create_page():
 features =create_page()
 st.write(features)
 
+
+if st.sidebar.button('Submit'):
+	st.write(features)
+
+	loaded_model = load(open('model.pkl','rb'))
+	res = loaded_model.predict(features)
+	if res == 0:
+		st.write('unknown (alive)')
+	elif res == 1: 
+	    st.write('cardiogenic shock')
+	elif res == 2: 
+	    st.write('pulmonary edema')
+	elif res == 3: 
+	    st.write('myocardial rupture')
+	elif res == 4: 
+	    st.write('progress of congestive heart failure')
+	elif res == 5: 
+	    st.write('thromboembolism')
+	elif res == 6: 
+	    st.write('asystole')
+	elif res == 7: 
+	    st.write('ventricular fibrillation')
+		
+	else:
+		st.write('Something wrong')
+
+	st.write(res)
 
