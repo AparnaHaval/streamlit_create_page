@@ -11,7 +11,7 @@ st.title('Data Science Project')
 def create_page():
 	
 	st.title('Myocardinal Infarction')
-	st.write('Lethal outcome (cause)')
+	st.write('Lethal result (cause)')
 	Age = st.sidebar.slider('Choose you age', min_value=0, max_value=100)
 	Systolic_BP_mmHg = st.number_input('Enter Systolic_BP(mmHg)')
 	Diastolic_BP_mmHg = st.number_input('Diastolic_BP(mmHg)')
