@@ -1,26 +1,27 @@
+import colorsys
 from urllib.request import AbstractDigestAuthHandler
 import streamlit as st 
 import pandas as pd 
 from pickle import load
 
-st.title('Data Science Project')
 
+new_title = '<p style="font-family:Courier; color:Green; font-size: 42px;">Data Science Project</p>'
+st.markdown(new_title, unsafe_allow_html=True)
+st.title(' :blue[Myocardinal Infarction]')
 
 
 
 def create_page():
-	
-	st.title('Myocardinal Infarction')
-	st.write('Lethal result (cause)')
+	st.sidebar.title('Enter your inputs')
 	Age = st.sidebar.slider('Choose you age', min_value=0, max_value=100)
-	Systolic_BP_mmHg = st.number_input('Enter Systolic_BP(mmHg)')
-	Diastolic_BP_mmHg = st.number_input('Diastolic_BP(mmHg)')
-	Ventricular_fibrillation = st.sidebar.radio('Ventricular_fibrillation',[0,1])
-	Myocardial_rupture = st.sidebar.radio('Myocardial_rupture',[0,1])
-	Cardiogenic_shock = st.sidebar.radio('Cardiogenic_shock',[0,1])
-	abc = st.selectbox('Exertional angina pectoris in the anamnesis',[1,2,3,4,5,6])
-	Abcd = st.number_input('Presence of chronic Heart failure (HF) in the anamnesis')	    
-	ant_im = st.number_input('Presence of an anterior myocardial infarction (left ventricular)')
+	Systolic_BP_mmHg = st.sidebar.number_input('Enter Systolic_BP(mmHg)')
+	Diastolic_BP_mmHg = st.sidebar.number_input('Diastolic_BP(mmHg)')
+	Ventricular_fibrillation = st.sidebar.radio('Ventricular_fibrillation (0-No,1-yes)',[0,1])
+	Myocardial_rupture = st.sidebar.radio('Myocardial_rupture (0-No,1-yes)',[0,1])
+	Cardiogenic_shock = st.sidebar.radio('Cardiogenic_shock (0-No,1-yes)',[0,1])
+	abc = st.sidebar.selectbox('Exertional angina pectoris in the anamnesis',[1,2,3,4,5,6])
+	Abcd = st.sidebar.number_input('Presence of chronic Heart failure (HF) in the anamnesis')	    
+	ant_im = st.sidebar.number_input('Presence of an anterior myocardial infarction (left ventricular)')
 	ESR = st.sidebar.slider('Erythrocyte sedimentation rate', min_value=0, max_value=100)
 
 
@@ -33,40 +34,44 @@ def create_page():
 			 'STENOK_AN':abc,
 			 'ZSN_A' : Abcd,
 			 'ant_im' : ant_im,
-			 'ROE' : ESR
+			 'ROE' : ESR 
 			}
 
 	df = pd.DataFrame(data, index=[0])
 	return df
 
 features =create_page()
-st.write(features)
 
 
 if st.sidebar.button('Submit'):
+	st.title('Inputs')
 	st.write(features)
+	st.title('Lethal outcome (cause):')
+  
 
 	loaded_model = load(open('model.pkl','rb'))
 	res = loaded_model.predict(features)
 	if res == 0:
-		st.write('unknown (alive)')
+		st.write('**Cause : unknown (alive) **')
 	elif res == 1: 
-	    st.write('cardiogenic shock')
+	    st.write('**Cause : cardiogenic shock**')
 	elif res == 2: 
-	    st.write('pulmonary edema')
+	    st.write('**Cause: pulmonary edema**')
 	elif res == 3: 
-	    st.write('myocardial rupture')
+	    st.write('**Cause: myocardial rupture**')
 	elif res == 4: 
-	    st.write('progress of congestive heart failure')
+	    st.write('**Cause: progress of congestive heart failure**')
 	elif res == 5: 
-	    st.write('thromboembolism')
+	    st.write('**Cause: thromboembolism**')
 	elif res == 6: 
-	    st.write('asystole')
+	    st.write('**Cause: asystole**')
 	elif res == 7: 
-	    st.write('ventricular fibrillation')
-		
+	    st.write('**Cause: ventricular fibrillation**')	
 	else:
-		st.write('Something wrong')
+		st.write('**Something wrong**')
 
 	st.write(res)
+	
+
+
 
